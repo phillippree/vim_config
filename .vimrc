@@ -1,113 +1,119 @@
-set nocompatible              " required
+set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+syntax on
 call vundle#begin()
-
-let mapleader = ","
-
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/syntastic'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'nvie/vim-flake8'
+Plugin 'plytophogy/vim-virtualenv'
 Plugin 'jnurmine/Zenburn'
-Plugin 'jistr/vim-nerdtree-tabs' 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'nightsense/stellarized'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'powerline/powerline'
+Plugin 'kien/ctrlp.vim'
+"Plugin 'powerline/powerline'
+Plugin 'dracula/vim'
+Plugin 'ap/vim-buftabline'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'MattesGroeger/vim-bookmarks'
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-
-
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-"Enable folding
-set foldmethod=indent
-set foldlevel=99
-set scrolloff=5
-set number
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
+" enable folding
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
+nnoremap <space> za	"collapse with space bar
+let g:SimpylFold_docstring_preview=1
+
+"back space
+set nocompatible 
+set backspace=2
 
 au BufNewFile,BufRead *.py
-    \set tabstop=4
-    \set softtabstop=4
-    \set shiftwidth=4
-    \set textwidth=79
-    \set expandtab
-    \set autoindent
-    \set fileformat=unix
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix 
 
-"show a visual line under cursor
-set cursorline
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2  
 
-"show matching pair
-set showmatch
+"Google/yapf w0rp/ale
+"syntastic
+let g:syntastic_python_checkers = ['pylint']
+let python_highlight_all=1
+syntax on
+color dracula
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
-"enable python highlighting syntax
-let python_highlight_all = 1
 
-"Using with NerdTree
-nmap <Leader>N :NERDTreeToggle<CR>
-"set mouse=a
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
-"for tabs
-"enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
+" Youcompleteme
+let g:ycm_server_python_interpreter = '/home/phillip/qakit/qa-kit/venv/bin/python'
 
-"Show just the filename
+" Nerdtree
+map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-let g:airline#extensions#tabline#left_sep = '>'
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#fnamedmod = ':t'
-set t_Co=256
+set number
+" Uncomment the following to have Vim jump to the last position when
+" " reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal g'\"" | endif
+endif
 
-"For tab
-set hidden
 
-"show incomplete command
-set showcmd
+"Color  Theme
+"if has('gui_running')
+"  set background=dark
+"    colorscheme solarized
+"else
+"      colorscheme zenburn
+"endif
+"call togglebg#map("<F5>")
 
-"Show help menu
-set wildmenu
+set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
 
-"set color to slate
-color slate
-set background=dark
+" Always show statusline
+set laststatus=2
 
-"highlighting comments
-highlight Comment ctermfg=DarkGreen
-highlight String ctermfg=Green
-nmap <C-_> <esc>I#<esc>
+" Use 256 colours (Use this setting only if your terminal supports 256
+" colours)
+"set t_Co=256
 
-"Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"System Clipboard
+set clipboard=unnamed
 
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
+"mapping bnext and bfefore
+nnoremap <S-N> :bNext<CR>
 
-nmap <Leader>qq :q!<CR>
-nmap <Leader>ww :w!<CR>
-nmap <Leader>wq :wq<CR>
-
-"next tab
-nmap <Leader>bn :bNext<CR>
-nmap <Leader>bp :bprevious<CR>
-nmap <Leader>bd :bd<CR>
+"Make YouCompleteMe work as well
+let g:ycm_server_python_interpreter = '/usr/bin/python3.6.4'
