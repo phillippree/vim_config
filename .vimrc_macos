@@ -1,0 +1,59 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+
+"Vundle Boiler plate
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'altercation/vim-colors-solarized'
+
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'powerline/powerline'
+
+Plugin 'vim-syntastic/syntastic'
+Plugin 'ycm-core/YouCompleteMe'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+" --- General Settings ----
+set backspace=indent,eol,start
+set number
+set ruler
+set showcmd
+set incsearch
+set hlsearch
+set background=dark
+
+colorscheme solarized
+syntax enable
+
+" Start NERDTree and leave the cursor in it.
+autocmd VimEnter * NERDTree
+
+"Shortcut for nerdtree
+nnoremap <leader>nt :NERDTreeToggle<CR> " press CTRL n to open nerdtree
+nnoremap <leader>nf :NERDTreeFind<CR>
+nnoremap <leader>nn :NERDTreeFocus<CR>
+
+"show hidden file from nerdtree
+let NERDTreeShowHidden=1
+
+"tabs shortcut
+nnoremap <leader>tt :tabnew<CR>  "new tab
+nnoremap <leader>tn :tabnext<CR> "next tab
+nnoremap <leader>tp :tabprev<CR> "prev tab"
+
+
+"for tab from vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
+
